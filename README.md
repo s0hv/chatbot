@@ -16,6 +16,7 @@ To start the api run `uvicorn server.client:app --port 8080`
 For interacting with the bot the `interact.py` script is used. <br/>
 Simple usage consists of 
 ```
-$ python interact.py -i "Hi, how are you?" -r 
+(venv) [user@computer]$ python interact.py -i "Hi, how are you?"
 i am doing well , thank you . what do you do for a living ? i work in it .
 ```
+where the response is printed to the console by default.
