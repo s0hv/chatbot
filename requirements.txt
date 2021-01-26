@@ -1,0 +1,6 @@
+parlai~=1.0.0
+websocket-client~=0.57.0
+fastapi~=0.63.0
+uvicorn[standard]~=0.13.3
+pydantic~=1.7.3
+requests~=2.25.1
