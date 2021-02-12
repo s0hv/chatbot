@@ -21,7 +21,7 @@ Description=Websocket server for conversation bot
 WantedBy=multi-user.target
 
 [Service]
-Type=Simple
+Type=simple
 Restart=on-failure
 RestartSec=5
 User=$USERNAME
@@ -53,7 +53,7 @@ Description=API server for conversation bot
 WantedBy=multi-user.target
 
 [Service]
-Type=Simple
+Type=simple
 Restart=on-failure
 RestartSec=5
 User=$USERNAME
