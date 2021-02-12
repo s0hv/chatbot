@@ -12,6 +12,14 @@ echo "Script directory \"$DIR\"
 User the script will be running as: $USERNAME
 "
 
+read -p "Do you want to continue with this configuration (y/n)? " -n 1 -r
+echo    # (optional) move to a new line
+if [[ ! $REPLY =~ ^[Yy]$ ]]
+then
+  exit 0
+fi
+
+
 WS_SERVICE_NAME="conversation-websocket.service"
 WS_SERVICE="
 [Unit]
