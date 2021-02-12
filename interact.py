@@ -33,7 +33,7 @@ if __name__ == '__main__':
         if not os.path.isfile(opts.input):
             raise FileNotFoundError(f'"{opts.input}" does not point to a file')
 
-        with open(opts.input, 'w', encoding='utf-8') as f:
+        with open(opts.input, 'r', encoding='utf-8') as f:
             message = f.read()
 
     else:
