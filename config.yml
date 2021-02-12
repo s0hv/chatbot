@@ -12,5 +12,5 @@ opt:  # Additional model opts go here
   models:
     blender_90M:
       model: transformer/generator
-      model_file: zoo:blender/blender_90M/model
+      model_file: zoo:blender/blender_400Mdistill/model
       interactive_mode: True
