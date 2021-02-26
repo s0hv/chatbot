@@ -141,3 +141,7 @@ cython_debug/
 
 # Custom
 .idea/
+.run/
+
+# Configs
+pm2-ecosystem.json

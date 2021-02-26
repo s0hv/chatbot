@@ -1,0 +1,9 @@
+{
+    "name": "text-integration",
+    "script": "./integration.js",
+    "instances": 1,
+    "autorestart": true,
+    "env": {
+        "INTEGRATION_PATH": "./integration"
+    }
+}
