@@ -46,6 +46,14 @@ async def send_message(msg: str) -> Optional[str]:
     return new_message
 
 
+async def reset_conversation():
+    """
+    Reset the ongoing conversation if the websocket is open
+    """
+    if WS and WS.open:
+        await send_message('[RESET]')
+
+
 app = FastAPI()
 
 
@@ -54,11 +62,15 @@ class Message(BaseModel):
     Defines a body that contains a message
     """
     message: str
+    reset: Optional[bool]
 
 
 @app.post('/interact')
 async def interact(message: Message = Body(...)):
     print(message)
+    if message.reset:
+        await reset_conversation()
+
     return {
         'response': await send_message(message.message)
     }
@@ -66,7 +78,7 @@ async def interact(message: Message = Body(...)):
 
 @app.post('/reset')
 async def reset_interaction():
-    await send_message('[RESET]')
+    await reset_conversation()
 
 
 @app.on_event('shutdown')
