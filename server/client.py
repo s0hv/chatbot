@@ -6,12 +6,7 @@ import websockets
 from fastapi import FastAPI, Body
 from pydantic import BaseModel
 
-SHARED = {}
-
-
-def setup_interactive(ws):
-    # Save websockets instance for global usage
-    SHARED['ws'] = ws
+WS: Optional[websockets.WebSocketCommonProtocol] = None
 
 
 async def handle_startup():
@@ -29,18 +24,17 @@ async def send_message(msg: str) -> Optional[str]:
     Returns:
         The response message or None if it was not defined
     """
-    ws = SHARED['ws']
-    if not ws.open:
+    if not (WS and WS.open):
         print('Reconnecting websocket')
-        ws = await connect_ws()
+        await connect_ws()
 
     print(f'Sending message {msg}')
     data = {
         'text': msg
     }
     json_data = json.dumps(data)
-    await ws.send(json_data)
-    resp = json.loads(await ws.recv())
+    await WS.send(json_data)
+    resp = json.loads(await WS.recv())
     new_message = resp['text']
 
     if '"begin"' in new_message:
@@ -78,23 +72,29 @@ async def reset_interaction():
 @app.on_event('shutdown')
 async def shutdown_event():
     # Close websocket on shutdown
-    await SHARED['ws'].close()
+    await WS.close()
 
 
 @app.on_event('startup')
 async def startup_event():
-    await connect_ws()
+    try:
+        await connect_ws()
+    except OSError:
+        print('Failed to connect to websocket on boot. Trying again on the next request')
+        # Failed to connect. Ignore and connect later
+        pass
 
 
 async def connect_ws():
+    global WS
     # Close existing connection
-    if SHARED.get('ws'):
-        await SHARED['ws'].close()
+    if WS:
+        await WS.close()
 
     # Open websocket on startup
     port = os.environ.get('WS_PORT', 36000)
 
     print("Connecting to port: ", port)
     ws = await websockets.connect('ws://localhost:{}/websocket'.format(port))
-    setup_interactive(ws)
+    WS = ws
     return ws
