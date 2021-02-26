@@ -1,7 +1,9 @@
 import argparse
-import requests
 import os
+import sys
+from json.decoder import JSONDecodeError
 
+import requests
 
 parser = argparse.ArgumentParser(description='Text to text conversation system')
 
@@ -40,15 +42,30 @@ if __name__ == '__main__':
         message = opts.input
 
     if not message:
-        raise ValueError('Empty message given')
+        print('Empty message given', file=sys.stderr)
+        sys.exit(1)
 
     data = {
-        'message': message
+        'message': message,
+        'reset': opts.reset
     }
-    r = requests.post(f'{url}/interact', json=data)
 
-    resp_data = r.json()
-    response = resp_data['response']
+    try:
+        r = requests.post(f'{url}/interact', json=data)
+    except requests.ConnectionError:
+        print('Failed to connect to API', file=sys.stderr)
+        sys.exit(1)
+
+    try:
+        resp_data = r.json()
+    except JSONDecodeError:
+        print('No data returned from the api', file=sys.stderr)
+        sys.exit(1)
+
+    response = resp_data.get('response')
+    if not response:
+        print('No data returned from the api', file=sys.stderr)
+        sys.exit(1)
 
     output = opts.output
     if output:
