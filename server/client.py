@@ -37,12 +37,6 @@ async def send_message(msg: str) -> Optional[str]:
     resp = json.loads(await WS.recv())
     new_message = resp['text']
 
-    if '"begin"' in new_message:
-        print('Handling startup')
-        await handle_startup()
-
-        return await send_message(msg)
-
     return new_message
 
 

@@ -1,16 +1,15 @@
 tasks:
   default:
-    onboard_world: MessengerBotChatOnboardWorld
-    task_world: MessengerBotChatTaskWorld
+    task_world: ConversationBotTaskWorld
     timeout: 60
     agents_required: 1
 task_name: chatbot
-world_module: parlai.chat_service.tasks.chatbot.worlds
-overworld: MessengerOverworld
+world_module: chatbot.worlds
+overworld: ConversationBotTaskWorld
 max_workers: 30
 opt:  # Additional model opts go here
   models:
-    blender_90M:
+    blender_400M:
       model: transformer/generator
       model_file: zoo:blender/blender_400Mdistill/model
       interactive_mode: True

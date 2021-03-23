@@ -1,5 +1,12 @@
 import logging
 import os
+import sys
+from pathlib import Path
+
+# https://stackoverflow.com/a/30218825
+# Add project directory to python path so local imports can be done
+parent = Path(__file__).resolve().parents[1]
+sys.path.append(str(parent))
 
 # Clear default loggers. Must be done before importing parlai
 logging.getLogger().handlers.clear()
@@ -19,7 +26,7 @@ logging.basicConfig(
 )
 
 if __name__ == '__main__':
-    from parlai.chat_service.services.browser_chat import run
+    from chatbot.service import run
     import parlai.chat_service.utils.config as config_utils
 
     opt = run.setup_args()
