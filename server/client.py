@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 from typing import Optional
@@ -34,7 +35,11 @@ async def send_message(msg: str) -> Optional[str]:
     }
     json_data = json.dumps(data)
     await WS.send(json_data)
-    resp = json.loads(await WS.recv())
+    try:
+        resp = json.loads(await asyncio.wait_for(WS.recv(), 3))
+    except asyncio.TimeoutError:
+        return
+
     new_message = resp['text']
 
     return new_message
