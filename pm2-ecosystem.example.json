@@ -4,6 +4,8 @@
     "instances": 1,
     "autorestart": true,
     "env": {
-        "INTEGRATION_PATH": "./integration"
+        "INTEGRATION_PATH": "./integration",
+        "INTEGRATION_IN_FILE": "text-in.txt",
+        "INTEGRATION_OUT_FILE": "text-out.txt"
     }
 }

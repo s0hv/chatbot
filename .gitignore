@@ -145,3 +145,4 @@ cython_debug/
 
 # Configs
 pm2-ecosystem.json
+pm2-generated-ecosystem.json
